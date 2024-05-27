@@ -76,7 +76,8 @@ public class PrescriptionDetailController {
     })
     @GetMapping("/find/{id}")
     public ResponseEntity<PrescriptionDetailDto> getFindById(@PathVariable Long id){
-        return ResponseEntity.ok(prescriptionDetailServiceIn.findByIdIn(id).orElseThrow());
+        return prescriptionDetailServiceIn.findByIdIn(id).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @Operation(summary = "Actualizar un Detalle de prescripcion.",
