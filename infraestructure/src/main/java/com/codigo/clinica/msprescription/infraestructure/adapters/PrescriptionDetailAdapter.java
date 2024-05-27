@@ -112,7 +112,7 @@ public class PrescriptionDetailAdapter implements PrescriptionDetailServiceOut {
         return prescriptionDto;
     }
 
-    private PrescriptionDetail propertyCreate(PrescriptionDetailRequest request){
+    public PrescriptionDetail propertyCreate(PrescriptionDetailRequest request){
         PrescriptionDetail entity= new PrescriptionDetail();
         getEntity(entity, request);
         entity.setStatus(Constants.STATUS_ACTIVE);
@@ -126,7 +126,7 @@ public class PrescriptionDetailAdapter implements PrescriptionDetailServiceOut {
         entity.setUpdatedOn(getTimestamp());
         return entity;
     }
-    private PrescriptionDetail propertyDelete(PrescriptionDetail entity){
+    public PrescriptionDetail propertyDelete(PrescriptionDetail entity){
         entity.setStatus(Constants.STATUS_INACTIVE);
         entity.setDeletedBy(Constants.USU_ADMIN);
         entity.setDeletedOn(getTimestamp());

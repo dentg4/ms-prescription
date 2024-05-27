@@ -9,8 +9,15 @@ public class PrescriptionDetailMapper {
                 .id(prescriptionDetail.getId())
                 .amount(prescriptionDetail.getAmount())
                 .indications(prescriptionDetail.getIndications())
-                .prescriptionId(prescriptionDetail.getPrescription().getId())
-                .medicine(MedicineMapper.fromEntity(prescriptionDetail.getMedicine()))
+                .prescriptionId(prescriptionDetail.getPrescription()==null?null:prescriptionDetail.getPrescription().getId())
+                .medicine(prescriptionDetail.getMedicine()==null?null:MedicineMapper.fromEntity(prescriptionDetail.getMedicine()))
+                .status(prescriptionDetail.getStatus())
+                .createdBy(prescriptionDetail.getCreatedBy())
+                .createOn(prescriptionDetail.getCreatedOn())
+                .updatedBy(prescriptionDetail.getUpdatedBy())
+                .updatedOn(prescriptionDetail.getUpdatedOn())
+                .deletedBy(prescriptionDetail.getDeletedBy())
+                .deletedOn(prescriptionDetail.getDeletedOn())
                 .build();
     }
 }
