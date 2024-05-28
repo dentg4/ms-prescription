@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +72,7 @@ class MedicineAdapterTest {
 
         Optional<MedicineDto> response= medicineAdapter.findByIdOut(id);
 
-        assertNotNull(response);
+        assertTrue(response.isPresent());
         assertEquals(medicineDto.getName(),response.get().getName());
         assertEquals(medicineDto.getDescription(),response.get().getDescription());
     }
@@ -91,6 +92,14 @@ class MedicineAdapterTest {
         assertEquals(medicineDto.getName(),response.get().getName());
         assertEquals(medicineDto.getDescription(),response.get().getDescription());
 
+    }
+
+    @Test
+    void getAllOutNoList(){
+        when(medicineRepository.findAll()).thenReturn(Collections.emptyList());
+        List<MedicineDto> response = medicineAdapter.getAllOut();
+        assertNotNull(response);
+        assertTrue(response.isEmpty());
     }
 
     @Test
