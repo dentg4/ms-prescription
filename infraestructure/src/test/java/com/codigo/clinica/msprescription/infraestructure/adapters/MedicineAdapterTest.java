@@ -89,6 +89,7 @@ class MedicineAdapterTest {
 
         Optional<MedicineDto> response= medicineAdapter.findByIdOut(id);
         assertNotNull(response);
+        assertTrue(response.isPresent());
         assertEquals(medicineDto.getName(),response.get().getName());
         assertEquals(medicineDto.getDescription(),response.get().getDescription());
 
