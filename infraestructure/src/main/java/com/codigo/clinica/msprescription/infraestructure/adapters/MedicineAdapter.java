@@ -70,10 +70,10 @@ public class MedicineAdapter implements MedicineServiceOut {
     }
 
     private MedicineDto updateRedis(Long id,Medicine entity){
-        MedicineDto MedicineDto= MedicineMapper.fromEntity(entity);
-        String dataRedis=Util.convertToString(MedicineDto);
+        MedicineDto medicineDto= MedicineMapper.fromEntity(entity);
+        String dataRedis=Util.convertToString(medicineDto);
         redisService.updateInRedis(Constants.REDIS_GET_MEDICINE+id,dataRedis,redisExpirationTime);
-        return MedicineDto;
+        return medicineDto;
     }
 
     public Medicine propertyCreate(MedicineRequest request){

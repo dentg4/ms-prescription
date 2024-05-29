@@ -20,4 +20,8 @@ public class PrescriptionDetailMapper {
                 .deletedOn(prescriptionDetail.getDeletedOn())
                 .build();
     }
+
+    private PrescriptionDetailMapper() {
+    }
+
 }

@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +21,6 @@ public class PrescriptionDto {
     private Long doctorId;
     private MedicalRecordDto medicalRecord;
     private Long medicalRecordId;
-//    private List<PrescriptionDetailDto> prescriptionDetails;
     private Integer status;
     private String createdBy;
     private Timestamp createOn;

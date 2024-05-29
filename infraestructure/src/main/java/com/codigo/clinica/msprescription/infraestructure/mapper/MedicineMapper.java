@@ -18,4 +18,7 @@ public class MedicineMapper {
                 .deletedOn(medicine.getDeletedOn())
                 .build();
     }
+
+    private MedicineMapper() {
+    }
 }

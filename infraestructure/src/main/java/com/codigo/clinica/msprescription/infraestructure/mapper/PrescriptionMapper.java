@@ -38,4 +38,7 @@ public class PrescriptionMapper {
                 .deletedOn(entity.getDeletedOn())
                 .build();
     }
+
+    private PrescriptionMapper() {
+    }
 }

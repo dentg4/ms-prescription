@@ -4,6 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Util {
+
+    private Util() {
+    }
+
     public static <T> String convertToString(T objectTo){
         try {
             ObjectMapper objectMapper = new ObjectMapper();

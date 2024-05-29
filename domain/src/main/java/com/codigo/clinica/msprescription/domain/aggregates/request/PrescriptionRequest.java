@@ -20,5 +20,4 @@ public class PrescriptionRequest {
 
     private Long medicalRecordId;
 
-//    private List<PrescriptionDetailDto> prescriptionDetails;
 }

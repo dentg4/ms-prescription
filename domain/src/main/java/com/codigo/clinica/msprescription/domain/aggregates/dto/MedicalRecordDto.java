@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MedicalRecordDto {
     private Long id;
     private String diagnos;

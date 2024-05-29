@@ -7,4 +7,7 @@ public class Constants {
     public static final String REDIS_GET_PRESCRIPTION = "MS:PRESCRIPTION:PRESCRIPTION:";
     public static final String REDIS_GET_MEDICINE = "MS:PRESCRIPTION:MEDICINE:";
     public static final String REDIS_GET_PRESCRIPTION_DETAIL = "MS:PRESCRIPTION:PRESCRIPTION_DETAIL:";
+
+    private Constants() {
+    }
 }

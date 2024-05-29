@@ -22,7 +22,6 @@
     <properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.5</spring-cloud.version>
-<!--		<sonar.coverage.exclusions>**/com/codigo/unittest/controller/**</sonar.coverage.exclusions>-->
 		<sonar.host.url>http://localhost:9000/</sonar.host.url>
 		<sonar.login>sqp_616ba5d8a7cfaef58b50b80b713479a1a4d74cbb</sonar.login>
 		<sonar.projectKey>ms-prescription</sonar.projectKey>
@@ -109,6 +108,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.codigo.clinica.msprescription.application.ApplicationLauncher</mainClass>
 					<image>
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
