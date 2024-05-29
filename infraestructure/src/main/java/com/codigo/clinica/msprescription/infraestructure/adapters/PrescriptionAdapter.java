@@ -13,15 +13,11 @@ import com.codigo.clinica.msprescription.infraestructure.entity.Prescription;
 import com.codigo.clinica.msprescription.infraestructure.mapper.PrescriptionMapper;
 import com.codigo.clinica.msprescription.infraestructure.redis.RedisService;
 import com.codigo.clinica.msprescription.infraestructure.util.Util;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +34,8 @@ public class PrescriptionAdapter implements PrescriptionServiceOut {
 
     @Override
     public PrescriptionDto createPrescriptionOut(PrescriptionRequest request) {
-        MedicalRecordDto medicalRecordDto = validateResponse(clientMsPatient.getMedicalRecord(request.getMedicalRecordId()));
-        DoctorDto doctorDto = validateResponse(clientMsStaff.getDoctorById(request.getDoctorId()));
+        MedicalRecordDto medicalRecordDto = Util.validateResponse(clientMsPatient.getMedicalRecord(request.getMedicalRecordId()));
+        DoctorDto doctorDto = Util.validateResponse(clientMsStaff.getDoctorById(request.getDoctorId()));
 
         Prescription prescription = propertyCreate(request);
 
@@ -54,8 +50,8 @@ public class PrescriptionAdapter implements PrescriptionServiceOut {
             dto = Util.convertFromString(redisInfo, PrescriptionDto.class);
         }else{
             Prescription prescription=findByIdPrescription(id);
-            MedicalRecordDto medicalRecordDto = validateResponse(clientMsPatient.getMedicalRecord(prescription.getMedicalRecordId()));
-            DoctorDto doctorDto = validateResponse(clientMsStaff.getDoctorById(prescription.getDoctorId()));
+            MedicalRecordDto medicalRecordDto = Util.validateResponse(clientMsPatient.getMedicalRecord(prescription.getMedicalRecordId()));
+            DoctorDto doctorDto = Util.validateResponse(clientMsStaff.getDoctorById(prescription.getDoctorId()));
             dto = PrescriptionMapper.fromEntity(prescription, medicalRecordDto,doctorDto);
 
             String dataFromRedis = Util.convertToString(dto);
@@ -73,8 +69,8 @@ public class PrescriptionAdapter implements PrescriptionServiceOut {
     @Override
     public PrescriptionDto updateOut(Long id, PrescriptionRequest request) {
         Prescription prescription = findByIdPrescription(id);
-        MedicalRecordDto medicalRecordDto = validateResponse(clientMsPatient.getMedicalRecord(request.getMedicalRecordId()));
-        DoctorDto doctorDto = validateResponse(clientMsStaff.getDoctorById(request.getDoctorId()));
+        MedicalRecordDto medicalRecordDto = Util.validateResponse(clientMsPatient.getMedicalRecord(request.getMedicalRecordId()));
+        DoctorDto doctorDto = Util.validateResponse(clientMsStaff.getDoctorById(request.getDoctorId()));
 
         PrescriptionDto prescriptionDto=PrescriptionMapper.fromEntity(
                 prescriptionRepository.save(propertyUpdate(prescription, request)),
@@ -135,11 +131,4 @@ public class PrescriptionAdapter implements PrescriptionServiceOut {
                 .orElseThrow(()-> new RuntimeException("Prescripción no encontrada."));
     }
 
-    private <T> T validateResponse(ResponseEntity<T> reponse){
-        if(reponse.getStatusCode() == HttpStatus.OK){
-            return reponse.getBody();
-        }else{
-            throw new RuntimeException("Error al obtener registro.");
-        }
-    }
 }

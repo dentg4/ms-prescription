@@ -19,11 +19,4 @@ public class MedicalRecordDto {
     private String reference;
     private Timestamp date;
     private Long patientId;
-    private Integer status;
-    private String createdBy;
-    private Timestamp createOn;
-    private String updatedBy;
-    private Timestamp updatedOn;
-    private String deletedBy;
-    private Timestamp deletedOn;
 }

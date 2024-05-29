@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "ms-patient")
 public interface ClientMsPatient {
 
-    @GetMapping("/api/v1/ms-patient/medical/record/find/{id}")
+    @GetMapping("/api/v1/ms-patient/record/find/{id}")
     ResponseEntity<MedicalRecordDto> getMedicalRecord(@PathVariable Long id);
 }
