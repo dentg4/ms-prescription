@@ -3,6 +3,7 @@ package com.codigo.clinica.msprescription.infraestructure.adapters;
 import com.codigo.clinica.msprescription.domain.aggregates.constants.Constants;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.DoctorDto;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicalRecordDto;
+import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicineDto;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.PrescriptionDto;
 import com.codigo.clinica.msprescription.domain.aggregates.request.PrescriptionRequest;
 import com.codigo.clinica.msprescription.infraestructure.client.ClientMsPatient;
@@ -22,11 +23,13 @@ import org.springframework.http.ResponseEntity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PrescriptionAdapterTest {
@@ -124,6 +127,15 @@ class PrescriptionAdapterTest {
         assertEquals(doctorDto,response.get().getDoctor());
     }
 
+    @Test
+    void getAllOutNoList(){
+        when(prescriptionRepository.findAll()).thenReturn(Collections.emptyList());
+        List<PrescriptionDto> response = prescriptionAdapter.getAllOut();
+        assertNotNull(response);
+        assertTrue(response.isEmpty());
+
+        verify(prescriptionRepository).findAll();
+    }
     @Test
     void getAllOut() {
         Prescription prescription = new Prescription();

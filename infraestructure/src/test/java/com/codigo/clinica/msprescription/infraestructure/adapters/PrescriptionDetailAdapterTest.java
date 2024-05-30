@@ -1,6 +1,7 @@
 package com.codigo.clinica.msprescription.infraestructure.adapters;
 
 import com.codigo.clinica.msprescription.domain.aggregates.constants.Constants;
+import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicineDto;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.PrescriptionDetailDto;
 import com.codigo.clinica.msprescription.domain.aggregates.request.DetailMedicinePair;
 import com.codigo.clinica.msprescription.domain.aggregates.request.PrescriptionDetailListRequest;
@@ -19,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,6 +166,16 @@ class PrescriptionDetailAdapterTest {
         //verifica si el mock se ha llamado
         verify(redisService).getFromRedis(anyString());
         verify(redisService).saveInRedis(anyString(), anyString(), anyInt());
+    }
+
+    @Test
+    void getAllOutNoList(){
+        when(prescriptionDetailRepository.findAll()).thenReturn(Collections.emptyList());
+        List<PrescriptionDetailDto> response = prescriptionDetailAdapter.getAllOut();
+        assertNotNull(response);
+        assertTrue(response.isEmpty());
+
+        verify(prescriptionDetailRepository).findAll();
     }
 
     @Test

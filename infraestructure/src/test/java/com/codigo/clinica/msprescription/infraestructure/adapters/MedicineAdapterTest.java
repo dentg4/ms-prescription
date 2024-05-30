@@ -58,6 +58,9 @@ class MedicineAdapterTest {
         assertNotNull(medicineDto.getStatus());
         assertNotNull(medicineDto.getCreatedBy());
         assertNotNull(medicineDto.getCreateOn());
+
+        verify(medicineRepository).save(any(Medicine.class));
+
     }
 
     @Test
@@ -75,6 +78,8 @@ class MedicineAdapterTest {
         assertTrue(response.isPresent());
         assertEquals(medicineDto.getName(),response.get().getName());
         assertEquals(medicineDto.getDescription(),response.get().getDescription());
+
+        verify(redisService).getFromRedis(anyString());
     }
     @Test
     void findByIdOutForBD() {
@@ -93,6 +98,8 @@ class MedicineAdapterTest {
         assertEquals(medicineDto.getName(),response.get().getName());
         assertEquals(medicineDto.getDescription(),response.get().getDescription());
 
+        verify(redisService).getFromRedis(anyString());
+        verify(medicineRepository).findById(anyLong());
     }
 
     @Test
@@ -101,6 +108,8 @@ class MedicineAdapterTest {
         List<MedicineDto> response = medicineAdapter.getAllOut();
         assertNotNull(response);
         assertTrue(response.isEmpty());
+
+        verify(medicineRepository).findAll();
     }
 
     @Test
