@@ -8,6 +8,7 @@
     </parent>
     <artifactId>report-jacoco</artifactId>
     <name>Archetype - report-jacoco</name>
+    <version>0.0.1</version>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
@@ -24,6 +25,7 @@
             <groupId>com.codigo.clinica</groupId>
             <artifactId>application</artifactId>
             <version>0.0.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
@@ -40,6 +42,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>src/main/java/com/codigo/clinica/msprescription/application/controller/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

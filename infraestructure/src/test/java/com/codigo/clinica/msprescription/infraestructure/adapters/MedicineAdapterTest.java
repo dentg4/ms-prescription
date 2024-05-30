@@ -81,6 +81,7 @@ class MedicineAdapterTest {
 
         verify(redisService).getFromRedis(anyString());
     }
+
     @Test
     void findByIdOutForBD() {
         Long id= 1L;
@@ -97,6 +98,19 @@ class MedicineAdapterTest {
         assertTrue(response.isPresent());
         assertEquals(medicineDto.getName(),response.get().getName());
         assertEquals(medicineDto.getDescription(),response.get().getDescription());
+
+        verify(redisService).getFromRedis(anyString());
+        verify(medicineRepository).findById(anyLong());
+    }
+
+    @Test
+    void findByIdOutNotFound() {
+        Long id = 1L;
+
+        when(redisService.getFromRedis(anyString())).thenReturn(null);
+        when(medicineRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> medicineAdapter.findByIdOut(id));
 
         verify(redisService).getFromRedis(anyString());
         verify(medicineRepository).findById(anyLong());
@@ -129,6 +143,8 @@ class MedicineAdapterTest {
         List<MedicineDto> response= medicineAdapter.getAllOut();
         assertNotNull(response);
         assertEquals(medicineDtos.size(),response.size());
+
+        verify(medicineRepository).findAll();
     }
 
     @Test
@@ -148,6 +164,9 @@ class MedicineAdapterTest {
         assertNotNull(medicineDto);
         assertEquals(request.getName(),medicineDto.getName());
         assertEquals(request.getDescription(),medicineDto.getDescription());
+
+        verify(medicineRepository).findById(anyLong());
+        verify(medicineRepository).save(any(Medicine.class));
     }
 
     @Test
@@ -166,6 +185,9 @@ class MedicineAdapterTest {
         assertNotNull(medicineDto);
         assertEquals(medicineDto.getName(),medicine.getName());
         assertEquals(medicineDto.getDescription(),medicine.getDescription());
-        assertEquals(medicineDto.getStatus(),Constants.STATUS_INACTIVE);
+        assertEquals(Constants.STATUS_INACTIVE, medicineDto.getStatus());
+
+        verify(medicineRepository).findById(anyLong());
+        verify(medicineRepository).save(any(Medicine.class));
     }
 }

@@ -12,6 +12,7 @@ import com.codigo.clinica.msprescription.infraestructure.dao.PrescriptionReposit
 import com.codigo.clinica.msprescription.infraestructure.entity.Medicine;
 import com.codigo.clinica.msprescription.infraestructure.entity.Prescription;
 import com.codigo.clinica.msprescription.infraestructure.entity.PrescriptionDetail;
+import com.codigo.clinica.msprescription.infraestructure.exceptions.ResponseValidationException;
 import com.codigo.clinica.msprescription.infraestructure.mapper.PrescriptionDetailMapper;
 import com.codigo.clinica.msprescription.infraestructure.redis.RedisService;
 import com.codigo.clinica.msprescription.infraestructure.util.Util;
@@ -31,6 +32,8 @@ public class PrescriptionDetailAdapter implements PrescriptionDetailServiceOut {
     private final MedicineRepository medicineRepository;
     private final RedisService redisService;
 
+    private static final String MSJ_EXCEPTION_PRESCRIPTION ="Prescripción no encontrada.";
+
     @Value("${ms.redis.expiration_time}")
     private int redisExpirationTime;
 
@@ -43,14 +46,14 @@ public class PrescriptionDetailAdapter implements PrescriptionDetailServiceOut {
 
     @Override
     public List<PrescriptionDetailDto> createListDetailOut(PrescriptionDetailListRequest request) {
-        if(request.getList().isEmpty()) throw new RuntimeException("No hay elemento a guardar.");
+        if(request.getList().isEmpty()) throw new ResponseValidationException("No hay elemento a guardar.");
 
         Prescription prescription = prescriptionRepository.findById(request.getPrescriptionId())
-                .orElseThrow(() -> new RuntimeException("Prescripción no encontrada."));
+                .orElseThrow(() -> new ResponseValidationException(MSJ_EXCEPTION_PRESCRIPTION));
 
         List<PrescriptionDetail> prescriptionDetails= request.getList().stream().map(detailRequest->{
             Medicine medicine = medicineRepository.findById(detailRequest.getMedicineId())
-                    .orElseThrow(() -> new RuntimeException("Medicina no encontrada."));
+                    .orElseThrow(() -> new ResponseValidationException("Medicina no encontrada."));
             return propertyCreateList(prescription, medicine, detailRequest);
         }).toList();
 
@@ -135,9 +138,9 @@ public class PrescriptionDetailAdapter implements PrescriptionDetailServiceOut {
     private void getEntity(PrescriptionDetail entity,PrescriptionDetailRequest request) {
 
         Prescription prescription = prescriptionRepository.findById(request.getPrescriptionId())
-                .orElseThrow(() -> new RuntimeException("Prescripción no encontrada."));
+                .orElseThrow(() -> new ResponseValidationException(MSJ_EXCEPTION_PRESCRIPTION));
         Medicine medicine =  medicineRepository.findById(request.getMedicineId())
-                .orElseThrow(() -> new RuntimeException("Medicina no encontrada."));
+                .orElseThrow(() -> new ResponseValidationException("Medicina no encontrada."));
 
 
         entity.setAmount(request.getAmount());
@@ -151,6 +154,6 @@ public class PrescriptionDetailAdapter implements PrescriptionDetailServiceOut {
     }
     private PrescriptionDetail findByIdPrescription(Long id){
         return prescriptionDetailRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Prescripción no encontrada."));
+                .orElseThrow(()-> new ResponseValidationException(MSJ_EXCEPTION_PRESCRIPTION));
     }
 }

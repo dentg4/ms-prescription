@@ -10,6 +10,7 @@ import com.codigo.clinica.msprescription.infraestructure.client.ClientMsPatient;
 import com.codigo.clinica.msprescription.infraestructure.client.ClientMsStaff;
 import com.codigo.clinica.msprescription.infraestructure.dao.PrescriptionRepository;
 import com.codigo.clinica.msprescription.infraestructure.entity.Prescription;
+import com.codigo.clinica.msprescription.infraestructure.exceptions.ResponseValidationException;
 import com.codigo.clinica.msprescription.infraestructure.mapper.PrescriptionMapper;
 import com.codigo.clinica.msprescription.infraestructure.redis.RedisService;
 import com.codigo.clinica.msprescription.infraestructure.util.Util;
@@ -128,7 +129,7 @@ public class PrescriptionAdapter implements PrescriptionServiceOut {
     }
     private Prescription findByIdPrescription(Long id){
         return prescriptionRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Prescripción no encontrada."));
+                .orElseThrow(()-> new ResponseValidationException("Prescripción no encontrada."));
     }
 
 }

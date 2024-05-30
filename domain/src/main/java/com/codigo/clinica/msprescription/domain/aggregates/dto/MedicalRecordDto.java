@@ -14,8 +14,6 @@ import java.sql.Timestamp;
 public class MedicalRecordDto {
     private Long id;
     private String diagnos;
-    private String observations;
-    private DoctorDto doctor;
     private String reference;
     private Timestamp date;
     private Long patientId;

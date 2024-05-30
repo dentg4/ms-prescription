@@ -6,6 +6,7 @@ import com.codigo.clinica.msprescription.domain.aggregates.request.MedicineReque
 import com.codigo.clinica.msprescription.domain.ports.out.MedicineServiceOut;
 import com.codigo.clinica.msprescription.infraestructure.dao.MedicineRepository;
 import com.codigo.clinica.msprescription.infraestructure.entity.Medicine;
+import com.codigo.clinica.msprescription.infraestructure.exceptions.ResponseValidationException;
 import com.codigo.clinica.msprescription.infraestructure.mapper.MedicineMapper;
 import com.codigo.clinica.msprescription.infraestructure.redis.RedisService;
 import com.codigo.clinica.msprescription.infraestructure.util.Util;
@@ -108,6 +109,6 @@ public class MedicineAdapter implements MedicineServiceOut {
     }
     private Medicine findByIdMedicine(Long id){
         return medicineRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Medicina no encontrada."));
+                .orElseThrow(()-> new ResponseValidationException("Medicina no encontrada."));
     }
 }

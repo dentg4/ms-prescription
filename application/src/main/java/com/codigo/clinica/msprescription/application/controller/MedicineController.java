@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class MedicineController {
     @ApiResponse(responseCode = "200", description = "Medicina creado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MedicineDto.class))})
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PostMapping("/create")
-    public ResponseEntity<MedicineDto> create(@RequestBody MedicineRequest request){
+    public ResponseEntity<MedicineDto> create(@Valid @RequestBody MedicineRequest request){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(medicineServiceIn.createMedicineIn(request));

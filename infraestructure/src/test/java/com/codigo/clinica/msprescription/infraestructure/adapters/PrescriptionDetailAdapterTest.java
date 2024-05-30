@@ -1,7 +1,6 @@
 package com.codigo.clinica.msprescription.infraestructure.adapters;
 
 import com.codigo.clinica.msprescription.domain.aggregates.constants.Constants;
-import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicineDto;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.PrescriptionDetailDto;
 import com.codigo.clinica.msprescription.domain.aggregates.request.DetailMedicinePair;
 import com.codigo.clinica.msprescription.domain.aggregates.request.PrescriptionDetailListRequest;
@@ -79,6 +78,10 @@ class PrescriptionDetailAdapterTest {
         assertEquals(prescriptionDetail.getMedicine().getId(),response.getMedicine().getId());
         assertEquals(prescription.getId(), response.getPrescriptionId());
         assertEquals(prescriptionDetail.getStatus(), response.getStatus());
+
+        verify(prescriptionRepository).findById(anyLong());
+        verify(medicineRepository).findById(anyLong());
+        verify(prescriptionDetailRepository).save(any(PrescriptionDetail.class));
     }
 
     @Test
@@ -135,6 +138,8 @@ class PrescriptionDetailAdapterTest {
         assertEquals(prescriptionDetailDto.getAmount(), response.get().getAmount());
         assertEquals(prescriptionDetailDto.getMedicineId(), response.get().getMedicineId());
         assertEquals(prescriptionDetailDto.getPrescriptionId(), response.get().getPrescriptionId());
+
+        verify(redisService).getFromRedis(anyString());
     }
 
     @Test
@@ -166,6 +171,18 @@ class PrescriptionDetailAdapterTest {
         //verifica si el mock se ha llamado
         verify(redisService).getFromRedis(anyString());
         verify(redisService).saveInRedis(anyString(), anyString(), anyInt());
+    }
+    @Test
+    void findByIdOutNotFound() {
+        Long id = 1L;
+
+        when(redisService.getFromRedis(anyString())).thenReturn(null);
+        when(prescriptionDetailRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> prescriptionDetailAdapter.findByIdOut(id));
+
+        verify(redisService).getFromRedis(anyString());
+        verify(prescriptionDetailRepository).findById(anyLong());
     }
 
     @Test
@@ -247,6 +264,10 @@ class PrescriptionDetailAdapterTest {
         assertEquals(request.getPrescriptionId(),dto.getPrescriptionId());
         assertEquals(request.getMedicineId(),dto.getMedicine().getId());
 
+        verify(prescriptionDetailRepository).findById(anyLong());
+        verify(prescriptionRepository).findById(anyLong());
+        verify(medicineRepository).findById(anyLong());
+        verify(prescriptionDetailRepository).save(any(PrescriptionDetail.class));
     }
 
     @Test
@@ -262,6 +283,9 @@ class PrescriptionDetailAdapterTest {
         PrescriptionDetailDto dto=prescriptionDetailAdapter.deleteOut(id);
         assertNotNull(dto);
         assertEquals(id, dto.getId());
-        assertEquals(dto.getStatus(),Constants.STATUS_INACTIVE);
+        assertEquals(Constants.STATUS_INACTIVE, dto.getStatus());
+
+        verify(prescriptionDetailRepository).findById(anyLong());
+        verify(prescriptionDetailRepository).save(any(PrescriptionDetail.class));
     }
 }

@@ -3,7 +3,6 @@ package com.codigo.clinica.msprescription.infraestructure.adapters;
 import com.codigo.clinica.msprescription.domain.aggregates.constants.Constants;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.DoctorDto;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicalRecordDto;
-import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicineDto;
 import com.codigo.clinica.msprescription.domain.aggregates.dto.PrescriptionDto;
 import com.codigo.clinica.msprescription.domain.aggregates.request.PrescriptionRequest;
 import com.codigo.clinica.msprescription.infraestructure.client.ClientMsPatient;
@@ -65,7 +64,7 @@ class PrescriptionAdapterTest {
             prescription.setDate(formatter.parse(dateString));
         }catch (ParseException e){
             e.printStackTrace();
-            fail("error al convertit la fecha");
+            fail("error al convertir la fecha");
         }
 
         PrescriptionRequest request= PrescriptionRequest.builder()
@@ -125,6 +124,18 @@ class PrescriptionAdapterTest {
         assertNotNull(response);
         assertEquals(medicalRecordDto,response.get().getMedicalRecord());
         assertEquals(doctorDto,response.get().getDoctor());
+    }
+    @Test
+    void findByIdOutNotFound() {
+        Long id = 1L;
+
+        when(redisService.getFromRedis(anyString())).thenReturn(null);
+        when(prescriptionRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> prescriptionAdapter.findByIdOut(id));
+
+        verify(redisService).getFromRedis(anyString());
+        verify(prescriptionRepository).findById(anyLong());
     }
 
     @Test
@@ -201,7 +212,7 @@ class PrescriptionAdapterTest {
         assertNotNull(prescriptionDto);
         assertEquals(id,prescriptionDto.getId());
         assertEquals(prescriptionDto.getObservations(), prescriptionDto.getObservations());
-        assertEquals(prescriptionDto.getStatus(),Constants.STATUS_INACTIVE);
+        assertEquals(Constants.STATUS_INACTIVE, prescriptionDto.getStatus());
 
     }
 }
