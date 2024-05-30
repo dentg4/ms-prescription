@@ -70,7 +70,7 @@ public class MedicineController {
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PutMapping("/update/{id}")
     public ResponseEntity<MedicineDto> update(@PathVariable Long id,
-                                                  @RequestBody MedicineRequest request){
+                                                  @Valid @RequestBody MedicineRequest request){
         return ResponseEntity.ok(medicineServiceIn.updateIn(id, request));
     }
 

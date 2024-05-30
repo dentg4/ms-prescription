@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class PrescriptionController {
     @ApiResponse(responseCode = "200", description = "Prescripción creado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = PrescriptionDto.class))})
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PostMapping("/create")
-    public ResponseEntity<PrescriptionDto> create(@RequestBody PrescriptionRequest request){
+    public ResponseEntity<PrescriptionDto> create(@Valid @RequestBody PrescriptionRequest request){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(prescriptionServiceIn.createPrescriptionIn(request));
@@ -68,8 +69,7 @@ public class PrescriptionController {
     @ApiResponse(responseCode = "200", description = "Prescripción actualizada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = PrescriptionDto.class))})
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PutMapping("/update/{id}")
-    public ResponseEntity<PrescriptionDto> update(@PathVariable Long id,
-                                                                      @RequestBody PrescriptionRequest request){
+    public ResponseEntity<PrescriptionDto> update(@PathVariable Long id, @Valid @RequestBody PrescriptionRequest request){
         return ResponseEntity.ok(prescriptionServiceIn.updateIn(id, request));
     }
 

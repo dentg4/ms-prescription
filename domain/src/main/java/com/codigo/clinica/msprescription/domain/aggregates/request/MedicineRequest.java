@@ -10,9 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 public class MedicineRequest {
 
-    @NotBlank(message = "El nombre es necesario.")
+    @NotBlank(message = "El campo nombre es necesario.")
     private String name;
 
-    @NotBlank(message = "La descripción es necesaria.")
+    @NotBlank(message = "La campo descripción es necesaria.")
     private String description;
 }

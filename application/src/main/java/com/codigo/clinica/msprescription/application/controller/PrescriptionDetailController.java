@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class PrescriptionDetailController {
     @ApiResponse(responseCode = "200", description = "Detalle de prescripcion creado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = PrescriptionDetailDto.class))})
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PostMapping("/create")
-    public ResponseEntity<PrescriptionDetailDto> create(@RequestBody PrescriptionDetailRequest request){
+    public ResponseEntity<PrescriptionDetailDto> create(@Valid @RequestBody PrescriptionDetailRequest request){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(prescriptionDetailServiceIn.createDetailIn(request));
@@ -43,7 +44,7 @@ public class PrescriptionDetailController {
     @ApiResponse(responseCode = "200", description = "Detalle de prescripcion creado con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = PrescriptionDetailDto.class))})
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PostMapping("/list/create")
-    public ResponseEntity<List<PrescriptionDetailDto>> createList(@RequestBody PrescriptionDetailListRequest request){
+    public ResponseEntity<List<PrescriptionDetailDto>> createList(@Valid @RequestBody PrescriptionDetailListRequest request){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(prescriptionDetailServiceIn.createListDetailIn(request));
@@ -79,8 +80,7 @@ public class PrescriptionDetailController {
     @ApiResponse(responseCode = "200", description = "Detalle de prescripcion actualizada con éxito.", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = PrescriptionDetailDto.class))})
     @ApiResponse(responseCode = "500", description = "Error interno del servidor.", content = { @Content(schema = @Schema()) })
     @PutMapping("/update/{id}")
-    public ResponseEntity<PrescriptionDetailDto> update(@PathVariable Long id,
-                                              @RequestBody PrescriptionDetailRequest request){
+    public ResponseEntity<PrescriptionDetailDto> update(@PathVariable Long id, @Valid @RequestBody PrescriptionDetailRequest request){
         return ResponseEntity.ok(prescriptionDetailServiceIn.updateIn(id, request));
     }
 
