@@ -1,6 +1,7 @@
 package com.codigo.clinica.msprescription.domain.aggregates.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -10,15 +11,15 @@ import lombok.*;
 @AllArgsConstructor
 public class PrescriptionDetailRequest {
 
-    @NotBlank(message = "El campo cantidad es necesario.")
+    @NotNull(message = "El campo cantidad es necesario.")
     private Integer amount;
 
     @NotBlank(message = "El campo indicaciones es necesario.")
     private String indications;
 
-    @NotBlank(message = "El campo prescripcion es necesario.")
+    @NotNull(message = "El campo prescripcion es necesario.")
     private Long prescriptionId;
 
-    @NotBlank(message = "El campo medicina es necesario.")
+    @NotNull(message = "El campo medicina es necesario.")
     private Long medicineId;
 }

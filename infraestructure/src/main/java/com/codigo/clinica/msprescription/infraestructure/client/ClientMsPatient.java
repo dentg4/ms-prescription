@@ -1,12 +1,13 @@
 package com.codigo.clinica.msprescription.infraestructure.client;
 
 import com.codigo.clinica.msprescription.domain.aggregates.dto.MedicalRecordDto;
+import com.codigo.clinica.msprescription.infraestructure.config.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "ms-patient")
+@FeignClient(name = "ms-patient", configuration = FeignConfig.class)
 public interface ClientMsPatient {
 
     @GetMapping("/api/v1/ms-patient/record/find/{id}")
