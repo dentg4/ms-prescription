@@ -3,14 +3,12 @@ package com.codigo.clinica.msprescription.infraestructure.config;
 import com.codigo.clinica.msprescription.domain.aggregates.request.TokenRequest;
 import com.codigo.clinica.msprescription.domain.aggregates.response.TokenResponse;
 import com.codigo.clinica.msprescription.infraestructure.client.ClientMsSecurity;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -20,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
@@ -41,14 +38,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = autHeader.substring(7);
         TokenRequest tokenRequest = new TokenRequest(jwt);
         TokenResponse tokenResponse = clientMsSecurity.validateToken(tokenRequest);
-        if(!tokenResponse.getIsValid()){
+        if(!tokenResponse.isValid()){
            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error en el token.");
            return;
         }
         if(tokenResponse.getUsername()!=null && SecurityContextHolder.getContext().getAuthentication() == null){
             Collection<SimpleGrantedAuthority> authorities =tokenResponse.getRoles().stream().map(SimpleGrantedAuthority::new).toList();
             UserDetails userDetails = new User(tokenResponse.getUsername(), "", authorities);
-            if(!tokenResponse.getIsTokenExpired()){
+            if(!tokenResponse.isTokenExpired()){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request,response);

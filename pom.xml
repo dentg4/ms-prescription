@@ -30,7 +30,6 @@
 		<module>application</module>
 		<module>report-jacoco</module>
 	</modules>
-<!--	sqp_616ba5d8a7cfaef58b50b80b713479a1a4d74cbb-->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

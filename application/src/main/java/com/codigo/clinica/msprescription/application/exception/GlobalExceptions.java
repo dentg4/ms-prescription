@@ -63,7 +63,7 @@ public class GlobalExceptions {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> exception(final Exception e, final WebRequest request) {
         return new ResponseEntity<>(ExceptionResponse.builder()
-                .message(e.getMessage())
+                .message("Operacion no ejecutada.")
                 .error(MSJ_RESPONSE).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
